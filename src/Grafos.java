@@ -8,7 +8,6 @@ class main {
         static int numVertices;
         int flujo_Camino;
 
-
         boolean bfs(int[][] grafoResidual, int s, int t, int[] nodoPadre) {
 
             boolean[] visitados = new boolean[numVertices];
@@ -26,34 +25,65 @@ class main {
                         cola.add(v);
                         nodoPadre[v] = u;
                         visitados[v] = true;
-                        flujo_Camino = Math.min(flujo_Camino, grafoResidual[u][v]);
+
                     }
                 }
             }
 
             return visitados[t];
 
+
         }
 
 
-
-
-        int edmondsKarp(int s, int t, int[][] grafoResidual) {
-            int u, v;
+        int edmondsKarp(int s, int nodoFinal, int[][] grafoResidual) {
+           /* int u, v;
             int[] nodoPadre = new int[numVertices];
             int flujoMaximo = 0;
             flujo_Camino = Integer.MAX_VALUE;
             while (bfs(grafoResidual, s, t, nodoPadre)) {
-
+                int nodoFinal = t;
                 for (v = t; v != s; v = nodoPadre[v]) {
                     u = nodoPadre[v];
                     grafoResidual[u][v] -= flujo_Camino;
                     grafoResidual[v][u] += flujo_Camino;
+                    nodoFinal = u;
                 }
 
                 flujoMaximo += flujo_Camino;
             }
 
+            return flujoMaximo;*/
+
+
+
+
+
+
+            int [] nodoPadre = new int[numVertices];
+
+            int flujoMaximo = 0;
+            flujo_Camino = Integer.MAX_VALUE;
+            while(bfs(grafoResidual, s, nodoFinal, nodoPadre)){
+
+                int t = nodoFinal;
+                while(t!=s){
+                    int si = nodoPadre[t];
+                    flujo_Camino = Math.min(flujo_Camino, grafoResidual[si][t]);
+                    t = si;
+                }
+
+                t = nodoFinal;
+                while(t!=s){
+                    int si = nodoPadre[t];
+                    grafoResidual[si][t]-=flujo_Camino;
+                    grafoResidual[t][si]+=flujo_Camino;
+                    t = si;
+                }
+
+                //add flow_capacity to max value
+                flujoMaximo+=flujo_Camino;
+            }
             return flujoMaximo;
         }
 
