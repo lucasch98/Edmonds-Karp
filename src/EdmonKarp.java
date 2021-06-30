@@ -73,13 +73,14 @@ public class EdmonKarp {
             cola.offer(s);
 
             Arco[] anterior = new Arco[numVertices+1];
+            long cap;
             while (!cola.isEmpty()) {
                 int vertice = cola.poll();
                 if (vertice == t)
                     break;
 
                 for (Arco arco : grafo[vertice]) {
-                    long cap = arco.capacidadRestante();
+                    cap = arco.capacidadRestante();
                     if (cap > 0 && !visitado(arco.v)) {
                         visita(arco.v);
                         anterior[arco.v] = arco;
