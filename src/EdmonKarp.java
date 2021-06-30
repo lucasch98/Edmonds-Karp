@@ -18,7 +18,7 @@ public class EdmonKarp {
         }
 
 
-        public long remainingCapacity() {
+        public long capacidadRestante() {
             return capacidad - flujo;
         }
 
@@ -55,13 +55,13 @@ public class EdmonKarp {
         }
 
         public long flujoMaximo() {
-            long flujo = -1;
+            long flujoCamino = -1;
             long flujoMaximo = 0;
 
-            while (flujo != 0){
+            while (flujoCamino != 0){
                 marcarComoNoVisitado();
-                flujo = bfs();
-                flujoMaximo += flujo;
+                flujoCamino = bfs();
+                flujoMaximo += flujoCamino;
             }
 
             return flujoMaximo;
@@ -79,7 +79,7 @@ public class EdmonKarp {
                     break;
 
                 for (Arco arco : grafo[vertice]) {
-                    long cap = arco.remainingCapacity();
+                    long cap = arco.capacidadRestante();
                     if (cap > 0 && !visitado(arco.v)) {
                         visita(arco.v);
                         anterior[arco.v] = arco;
@@ -93,7 +93,7 @@ public class EdmonKarp {
 
             long flujoCamino = Long.MAX_VALUE;
             for (Arco arco = anterior[t]; arco != null; arco = anterior[arco.u])
-                flujoCamino = min(flujoCamino, arco.remainingCapacity());
+                flujoCamino = min(flujoCamino, arco.capacidadRestante());
 
             for (Arco arco = anterior[t]; arco != null; arco = anterior[arco.u])
                 arco.aumentado(flujoCamino);
