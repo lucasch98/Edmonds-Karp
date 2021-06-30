@@ -91,16 +91,26 @@ public class EdmonKarp {
             if (anterior[t] == null) //No encontramos un camino desde s a t.
                 return 0;
 
-            long flujoCamino = Long.MAX_VALUE;
-            for (Arco arco = anterior[t]; arco != null; arco = anterior[arco.u])
-                flujoCamino = min(flujoCamino, arco.capacidadRestante());
-
-            for (Arco arco = anterior[t]; arco != null; arco = anterior[arco.u])
-                arco.aumentado(flujoCamino);
+            long flujoCamino = hallarFlujoMinimo(anterior, t);
+            recorridoAumentado(anterior, t, flujoCamino);
 
             return flujoCamino;
         }
+
+        private static long hallarFlujoMinimo(Arco[] anterior, int t){
+            long flujoCamino = Long.MAX_VALUE;
+            for (Arco arco = anterior[t]; arco != null; arco = anterior[arco.u])
+                flujoCamino = min(flujoCamino, arco.capacidadRestante());
+            return flujoCamino;
+        }
+
+        private static void recorridoAumentado(Arco[] anterior, int t, long flujoCamino){
+            for (Arco arco = anterior[t]; arco != null; arco = anterior[arco.u])
+                arco.aumentado(flujoCamino);
+        }
     }
+
+
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
