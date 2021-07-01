@@ -17,7 +17,6 @@ public class EdmonKarp {
             this.capacidad = cap;
         }
 
-
         public long capacidadRestante() {
             return capacidad - flujo;
         }
@@ -42,24 +41,12 @@ public class EdmonKarp {
             this.grafo = grafo;
         }
 
-        public void visita(int i) {
-            visitados[i] = nodoVisitado;
-        }
-
-        public boolean visitado(int i) {
-            return visitados[i] == nodoVisitado;
-        }
-
-        public void marcarComoNoVisitado() {
-            nodoVisitado++;
-        }
-
         public long flujoMaximo() {
             long flujoCamino = -1;
             long flujoMaximo = 0;
 
             while (flujoCamino != 0){
-                marcarComoNoVisitado();
+                nodoVisitado++;
                 flujoCamino = bfs();
                 flujoMaximo += flujoCamino;
             }
@@ -69,7 +56,7 @@ public class EdmonKarp {
 
         private long bfs() {
             Queue<Integer> cola = new ArrayDeque<>(numVertices);
-            visita(s);
+            visitados[s] = nodoVisitado;
             cola.offer(s);
 
             Arco[] anterior = new Arco[numVertices+1];
@@ -81,8 +68,8 @@ public class EdmonKarp {
 
                 for (Arco arco : grafo[vertice]) {
                     cap = arco.capacidadRestante();
-                    if (cap > 0 && !visitado(arco.v)) {
-                        visita(arco.v);
+                    if (cap > 0 && (visitados[arco.v] != nodoVisitado)) {
+                        visitados[arco.v] = nodoVisitado;
                         anterior[arco.v] = arco;
                         cola.offer(arco.v);
                     }
